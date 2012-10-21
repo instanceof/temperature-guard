@@ -1,0 +1,23 @@
+{
+  "name": "temperature-guard",
+  "version": "0.0.1",
+  "description": "TemperatureGuard web application",
+  "main": "server.js",
+  "dependencies": {
+    "socket.io": "~0.9.10",
+    "express": "~3.0.0rc5"
+  },
+  "devDependencies": {
+    "chai": "~1.2.0",
+    "mocha": "~1.3.2"
+  },
+  "scripts": {
+    "test": "mocha --compilers coffee:coffee-script --reporter spec",
+    "start": "coffee server.coffee"
+  },
+  "author": "jhuff",
+  "license": "BSD",
+  "directories": {
+    "test": "test"
+  }
+}

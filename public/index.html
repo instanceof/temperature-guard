@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Temperature Guard</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" type="text/css" href="css/digital-dream.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
+
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1/dijit/themes/tundra/tundra.css">
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1/dojox/widget/Toaster/Toaster.css">
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1/dojo/resources/dojo.css">
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1/dojo/dojo.xd.js"
+    	djConfig="parseOnLoad: true">
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <script>
+      
+        dojo.require("dojox.widget.Toaster" );
+        dojo.addOnLoad(function() {
+      
+            var socket = io.connect('/');
+			
+            // Remove the loading message
+            socket.on('connect', function() {
+                dojo.empty('status');
+            });
+	
+            // New readings pushed from the server
+            socket.on('message', function(obj) {
+			
+                // Check for the config section on the first section
+				
+                // Check for an announcement
+                if (obj['announcement']) {
+                    console.log("Announcement: " + obj['announcement']);           
+                    dojo.publish("announce", [{message: obj['announcement'], duration: 5000}]);
+                }
+				
+                // Get the most recent reading
+                if (obj['readings']) { 
+                    var readings = obj.readings;
+                    var reading = readings.slice(-1)[0];
+				
+                    if ('sensors' in reading) {
+                        var sensors = reading.sensors;
+                        for(var j = 0; j < sensors.length; j++) {
+                            var sensor = sensors[j];
+                            if(sensor.id === 1) {
+                                dojo.query('#temp1 h1.title').forEach(function(node, index, nodeList) {
+                                    node.innerHTML = sensor.name;
+                                });
+                                dojo.query('#temp1 span.digits').forEach(function(node, index, nodeList) {
+                                    node.innerHTML = sensor.reading;
+                                });
+                                dojo.query('#temp1 span.units').forEach(function(node, index, nodeList) {
+                                    node.innerHTML = '&deg;' + sensor.scale;
+                                });
+                            } else if(sensor.id === 3) {
+                                dojo.query('#temp2 h1.title').forEach(function(node, index, nodeList) {
+                                    node.innerHTML = sensor.name;
+                                });
+                                dojo.query('#temp2 span.digits').forEach(function(node, index, nodeList) {
+                                    node.innerHTML = sensor.reading;
+                                });
+                                dojo.query('#temp2 span.units').forEach(function(node, index, nodeList) {
+                                    node.innerHTML = '&deg;' + sensor.scale;
+                                });
+                            }					
+                        }
+                    }
+                } 
+            });
+        });
+
+    </script>
+    
+    <style>
+		.digits {
+			font-family: "DigitaldreamSkewRegular";
+			font-size: 10em;
+			font-style: mono;
+		}
+		
+		.units {
+			font-family: "DigitaldreamSkewRegular";
+			font-size: 3em;
+			font-style: mono;
+			letter-spacing:3px;
+		}
+    </style>
+  </head>
+  <body>
+    <div id="status"><p>Reading...</p></div>
+    
+    <div id="temp1">
+    	<h1 class="title"></h1>
+    	<span class="digits">00</span><span class="units">&deg;</span>
+    </div>
+    <div id="temp2">
+    	<h1 class="title"></h1>
+    	<span class="digits">00</span><span class="units">&deg;</span>
+    </div>
+    <div id="announcement" jsId="announcement" dojoType="dojox.widget.Toaster" messageTopic="announce" positionDirection="tr-down" ></div>
+  </body>
+</html>
