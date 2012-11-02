@@ -143,6 +143,31 @@ class Aux extends Sensor
         sensor['timeoutoflimits'] = tool
         sensor
 
+#
+# VM500-5-DCP-E and VM500-10-DCP-E
+#
+exports.VM500_5 = class VM500_5 extends Device
+    constructor: (config) ->
+        super
+
+    parse: (data) ->
+        options = {}
+        # Add this check only for devices in the spec that use resolution
+        options.resolution = if data[58] is 10 then 10 else 1
+        options.scale = String.fromCharCode data[59] if data[59] isnt 0
+        super data, options
+
+exports.VM500_10 = class VM500_10 extends Device
+    constructor: (config) ->
+        super
+
+    parse: (data) ->
+        options = {}
+        # Add this check only for devices in the spec that use resolution
+        options.resolution = if data[58] is 10 then 10 else 1
+        options.scale = String.fromCharCode data[59] if data[59] isnt 0
+        super data, options
+
 # 
 # VM500-8-DCP-E
 #
@@ -153,7 +178,6 @@ exports.VM500_8 = class VM500_8 extends Device
     parse: (data) ->
         options = {}
         # Add this check only for devices in the spec that use resolution
-        # options.resolution = if data[58] is 10 then 10 else 1
         options.resolution = 1
         options.scale = String.fromCharCode data[59] if data[59] isnt 0
         super data, options
