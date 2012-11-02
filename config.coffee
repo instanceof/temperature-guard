@@ -5,7 +5,7 @@ devices = {}
 # Uncomment the device to create
 #device = 'VM500_5'
 #device = 'VM500_10'
-devices['VM500_5'] = {
+devices['VM500_5'] = devices['VM500_10'] = {
     config: {
         name: "Computer Room"
         sensors: [
@@ -99,7 +99,7 @@ devices['VM500_5'] = {
     },
     cons: VM500_5
 }
-devices['VM500_10'] = devices['VM500_5']
+#
 #
 device = 'VM500_8'
 devices['VM500_8'] = {
