@@ -171,3 +171,17 @@ exports.VM500_8 = class VM500_8 extends Device
         options.scale = String.fromCharCode data[59] if data[59] isnt 0
         super data, options
 
+#
+# VM540-LV-DCP-E
+# 
+exports.VM540_LV = class VM540_LV extends Device
+    constructor: (config) ->
+        super
+
+    parse: (data) ->
+        options = {}
+        # Add this check only for devices in the spec that use resolution
+        options.resolution = 1
+        options.scale = String.fromCharCode data[59] if data[59] isnt 0
+        super data, options
+
