@@ -1,4 +1,4 @@
-{VM500_5,VM500_10,VM500_8,VM540_LV} = require('./model')
+{VM500_5,VM500_10,VM500_8,VM540_LV,VM520} = require('./model')
 
 devices = {}
 
@@ -268,6 +268,61 @@ devices['VM540_LV'] = {
         ]
     },
     cons: VM540_LV
+}
+
+#
+#device = 'VM520'
+devices['VM520'] = {
+    config: {
+        name: "Computer Room"
+        sensors: [
+            {
+                'id': 1,
+                'name': 'Temperature 1',
+                'type': 'Temperature',
+                'units': 'Deg',
+                'upperlimit': 75,
+                'lowerlimit': 60
+            },
+            {
+                'id': 2,
+                'name': 'Temperature 2',
+                'type': 'Temperature',
+                'units': 'Deg',
+                'upperlimit': 75,
+                'lowerlimit': 60
+            },
+            {
+                'id': 3,
+                'name': 'Temperature 3',
+                'type': 'Temperature',
+                'units': 'Deg',
+                'upperlimit': 75,
+                'lowerlimit': 60
+            },
+            {
+                'id': 4,
+                'name': 'Temperature 4',
+                'type': 'Temperature',
+                'units': 'Deg',
+                'upperlimit': 75,
+                'lowerlimit': 60
+            },
+            {
+                'id': 5,
+                'name': 'Aux',
+                'type': 'Aux'
+            }
+        ],
+        offsets: [
+            { start: 4, end: 9 },
+            { start: 9, end: 14 },
+            { start: 14, end: 19 },
+            { start: 19, end: 24 },
+            { start: 24, end: 29 }
+        ]
+    },
+    cons: VM520
 }
 
 #
